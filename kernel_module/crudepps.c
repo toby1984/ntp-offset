@@ -29,6 +29,7 @@ MODULE_LICENSE("GPL");
 MODULE_AUTHOR("tobias.gierke@code-sourcery.de");
 MODULE_DESCRIPTION("Looks for UDP broadcast packets with the string 'time' as payload and triggers a PPS event whenever one is received.");
 MODULE_VERSION("0.01");
+MODULE_SOFTDEP("pre: pps_core");
 
 // #define DEBUG
 #define EXPECTED_PACKET_LEN 32
