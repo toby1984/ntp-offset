@@ -9,3 +9,21 @@ Intentionally running an NTP server with a fixed offset is obviously something t
 2. Configure the local clocks on these servers to be 15 seconds apart
 3. Use an Arduino + Ethernet Shield + DCF77 receiver to generate special UDP broadcast packets every second
 4. Use a custom Linux kernel module to register a netfilter hook that listens for these UDP packets and also have this module register a custom PPS source that we can use to discipline the local clocks
+
+## Building (Linux Kernel Module)
+
+You'll need to usual suspects installed (on Debian/Ubuntu this means at least the packages build-essential and kernel sources/headers). It's helpful to also install the 'pps-tools' package as well.
+
+To build:
+
+- Change into the 'kernel_module' directory
+- Run 'make' as root user
+
+## Installation (Linux NTP host)
+
+1. Load the 'pps-core' kernel module
+2. Load the crudepps kernel module you've build by doing
+
+    insmod crudepps.ko
+    
+  
