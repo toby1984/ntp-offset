@@ -17,7 +17,7 @@ You'll need to usual suspects installed (on Debian/Ubuntu this means at least th
 
 ## Installation (Linux NTP host)
 
-### Setting up the kernel module 
+### Setting up the 'crudepps' kernel module 
 
 Run 
 
