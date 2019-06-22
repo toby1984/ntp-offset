@@ -25,7 +25,7 @@ Run
 
     make install
     
-to compile *AND* load the 'crudepps' kernel module. You will still need to make preparations to have this module loaded every time you boot the machine (for example by creating a /etc/modules-load.d/crudepps.conf file and putting 'crudepps' in it).
+to compile *AND* load the 'crudepps' kernel module. You will still need to make preparations to have this module loaded every time you boot the machine (for example by adding 'crudepps' to /etc/modules).
 
 ### Setting up ntpd
 
