@@ -23,7 +23,7 @@ You'll need to usual suspects installed (on Debian/Ubuntu this means at least th
 
 Run 
 
-    make install
+    sudo make install
     
 to compile *AND* load the 'crudepps' kernel module. You will still need to make preparations to have this module loaded every time you boot the machine (for example by adding 'crudepps' to /etc/modules).
 
