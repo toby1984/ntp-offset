@@ -29,7 +29,35 @@ to compile *AND* load the 'crudepps' kernel module. You will still need to make 
 
 ### Setting up ntpd
 
-TODO
+On Ubuntu/Debian
 
+    apt-get install ntp
     
+Then edit /etc/ntp.conf like so:
+
+    driftfile /var/lib/ntp/ntp.drift
+  
+    leapfile /usr/share/zoneinfo/leap-seconds.list
+
+    statistics loopstats peerstats clockstats
+    filegen loopstats file loopstats type day enable
+    filegen peerstats file peerstats type day enable
+    filegen clockstats file clockstats type day enable
+
+    restrict -4 default kod notrap nomodify nopeer noquery limited
+    restrict -6 default kod notrap nomodify nopeer noquery limited
+
+    restrict 127.0.0.1
+    restrict ::1
+
+    restrict source notrap nomodify noquery
+
+    pps /dev/pps0
+
+    # Enabling PPS/ATOM support
+    server 127.127.22.0 minpoll 5 maxpoll 5
+    fudge 127.127.22.0 refid PPS
+
+    # Local clock
+    server  127.127.1.0 prefer     # local clock   
   
