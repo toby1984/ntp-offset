@@ -14,9 +14,20 @@
 #include <linux/errno.h>
 #include <linux/pps_kernel.h>
 
+/*
+ * A Linux kernel module that registers a PPS source
+ * driven by UDP broadcast packets containing
+ * only the string 'time' as payload.
+ *
+ * Whenever such a UDP packet is received, a PPS capture
+ * event will be triggered.
+ * 
+ * (C) 2019 tobias.gierke@code-sourcery.de
+ */
+
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("Tobias Gierke");
-MODULE_DESCRIPTION("Looks for special UDP broadcast packets and triggers a PPS event for them.");
+MODULE_AUTHOR("tobias.gierke@code-sourcery.de");
+MODULE_DESCRIPTION("Looks for UDP broadcast packets with the string 'time' as payload and triggers a PPS event whenever one is received.");
 MODULE_VERSION("0.01");
 
 // #define DEBUG
@@ -28,13 +39,13 @@ static struct nf_hook_ops *nfho = NULL;
 
 
 static struct pps_source_info pps_ktimer_info = {
-  .name		= "lkm",
+  .name		= "crudepps",
   .path		= "",
   .mode		= PPS_CAPTUREASSERT | PPS_OFFSETASSERT |  PPS_ECHOASSERT |  PPS_CANWAIT | PPS_TSFMT_TSPEC,
   .owner		= THIS_MODULE,
 };
 
-static unsigned int lkm_hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_state *state)
+static unsigned int crudepps_hfunc(void *priv, struct sk_buff *skb, const struct nf_hook_state *state)
 {
   struct pps_event_time ts;
   struct iphdr *iph;
@@ -82,7 +93,7 @@ static unsigned int lkm_hfunc(void *priv, struct sk_buff *skb, const struct nf_h
   return NF_ACCEPT;
 }
 
-static int __init lkm_init(void)
+static int __init crudepps_init(void)
 {
   // register netfilter hook
   printk(KERN_INFO "Registering netfilter hook\n");
@@ -91,7 +102,7 @@ static int __init lkm_init(void)
     pr_err("Failed to allocate memory\n");
     return -ENOMEM;
   }
-  nfho->hook 	= (nf_hookfn*) lkm_hfunc;
+  nfho->hook 	= (nf_hookfn*) crudepps_hfunc;
   nfho->hooknum 	= NF_INET_PRE_ROUTING;
   nfho->pf 	= PF_INET;
   nfho->priority 	= NF_IP_PRI_FIRST;
@@ -111,7 +122,7 @@ static int __init lkm_init(void)
   return 0;
 }
 
-static void __exit lkm_exit(void)
+static void __exit crudepps_exit(void)
 {
   // unregister netfilter hook
   if ( nfho )
@@ -128,5 +139,5 @@ static void __exit lkm_exit(void)
   }
 }
 
-module_init(lkm_init);
-module_exit(lkm_exit);
+module_init(crudepps_init);
+module_exit(crudepps_exit);

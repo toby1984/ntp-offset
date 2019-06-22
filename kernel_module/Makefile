@@ -1,12 +1,13 @@
-obj-m += lkm.o
+obj-m += crudepps.o
 
-all: module app1
+all: module test_app
 
-app1: send_packet.c
-	gcc -o send_packet send_packet.c
+test_app: fake_pps_packet.c
+	gcc -o fake_pps_packet fake_pps_packet.c
 
 module:
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
 
 clean:
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
+	rm -f fake_pps_packet 2>&1 >/dev/null
