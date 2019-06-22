@@ -1,0 +1,12 @@
+.cache.mk
+.lkm.ko.cmd
+.lkm.mod.o.cmd
+.lkm.o.cmd
+.tmp_versions/
+Module.symvers
+lkm.ko
+lkm.mod.c
+lkm.mod.o
+lkm.o
+modules.order
+send_packet
